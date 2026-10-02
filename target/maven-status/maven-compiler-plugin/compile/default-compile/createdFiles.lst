@@ -1,0 +1,16 @@
+com\fairshare\FairShareApplication.class
+com\fairshare\auth\JwtAuthenticationFilter.class
+com\fairshare\auth\AuthDtos$UserResponse.class
+com\fairshare\auth\UnauthorizedException.class
+com\fairshare\auth\AuthService.class
+com\fairshare\auth\ConflictException.class
+com\fairshare\auth\JwtService.class
+com\fairshare\auth\AuthDtos$AuthResponse.class
+com\fairshare\auth\AuthDtos$LoginRequest.class
+com\fairshare\auth\AuthDtos.class
+com\fairshare\auth\AuthController.class
+com\fairshare\config\SecurityConfig.class
+com\fairshare\user\UserRepository.class
+com\fairshare\user\User.class
+com\fairshare\auth\AuthDtos$RegisterRequest.class
+com\fairshare\config\GlobalExceptionHandler.class

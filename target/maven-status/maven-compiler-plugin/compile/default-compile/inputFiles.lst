@@ -1,0 +1,12 @@
+C:\Users\sagar\FairShare\FairShare\src\main\java\com\fairshare\auth\AuthController.java
+C:\Users\sagar\FairShare\FairShare\src\main\java\com\fairshare\auth\AuthDtos.java
+C:\Users\sagar\FairShare\FairShare\src\main\java\com\fairshare\auth\AuthService.java
+C:\Users\sagar\FairShare\FairShare\src\main\java\com\fairshare\auth\ConflictException.java
+C:\Users\sagar\FairShare\FairShare\src\main\java\com\fairshare\auth\JwtAuthenticationFilter.java
+C:\Users\sagar\FairShare\FairShare\src\main\java\com\fairshare\auth\JwtService.java
+C:\Users\sagar\FairShare\FairShare\src\main\java\com\fairshare\auth\UnauthorizedException.java
+C:\Users\sagar\FairShare\FairShare\src\main\java\com\fairshare\config\GlobalExceptionHandler.java
+C:\Users\sagar\FairShare\FairShare\src\main\java\com\fairshare\config\SecurityConfig.java
+C:\Users\sagar\FairShare\FairShare\src\main\java\com\fairshare\FairShareApplication.java
+C:\Users\sagar\FairShare\FairShare\src\main\java\com\fairshare\user\User.java
+C:\Users\sagar\FairShare\FairShare\src\main\java\com\fairshare\user\UserRepository.java

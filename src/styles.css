@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600&display=swap');
+
+:root { font-family: 'DM Sans', sans-serif; color: #1e2a26; background: #f5f7f2; font-synthesis: none; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+.auth-layout { min-height: 100vh; display: grid; grid-template-columns: 44% 56%; }
+.brand-panel { background: #193b34; color: #f5f7f2; padding: clamp(2rem, 8vw, 7.5rem); display: flex; flex-direction: column; justify-content: center; }
+.brand-mark { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 14px; background: #d9f26a; color: #193b34; font-size: 28px; font-weight: 700; margin-bottom: 10rem; }
+.brand-panel h1, .home-card h1 { font: 600 clamp(2.8rem, 5vw, 5rem)/1.03 Fraunces, serif; letter-spacing: -.04em; margin: .5rem 0 1.25rem; max-width: 560px; }
+.brand-copy { color: #b7cdc3; max-width: 370px; font-size: 1.05rem; line-height: 1.6; }
+.eyebrow { text-transform: uppercase; letter-spacing: .13em; font-size: .72rem; font-weight: 700; margin: 0; }
+.accent { color: #657b23; }
+.form-panel { display: grid; place-items: center; padding: 2rem; }
+.form-wrap { width: min(100%, 390px); }
+.form-wrap h2 { font-size: 2rem; margin: 1.25rem 0 .5rem; letter-spacing: -.04em; }
+.muted { color: #708079; line-height: 1.6; }
+form { margin-top: 2rem; display: grid; gap: 1.1rem; }
+label { display: grid; gap: .45rem; font-size: .82rem; font-weight: 600; }
+input { border: 1px solid #d6dfd9; border-radius: 9px; padding: .8rem .9rem; color: #1e2a26; background: #fff; outline: none; }
+input:focus { border-color: #657b23; box-shadow: 0 0 0 3px #e7efc4; }
+button { border: 0; border-radius: 9px; padding: .85rem 1.2rem; background: #193b34; color: white; font-weight: 700; }
+button:disabled { opacity: .6; cursor: wait; }
+.error { color: #b1433f; font-size: .82rem; margin: 0; }
+.switch-auth { margin-top: 1.5rem; color: #708079; font-size: .88rem; }
+a { color: #526c16; font-weight: 700; text-decoration: none; }
+.home-layout { min-height: 100vh; max-width: 1100px; margin: auto; padding: 1.5rem clamp(1.25rem, 5vw, 4rem); }
+.topbar { display: flex; align-items: center; justify-content: space-between; }
+.wordmark { font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; gap: .5rem; }
+.wordmark span { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: #d9f26a; color: #193b34; }
+.button-quiet { background: transparent; color: #526c16; padding: .5rem; }
+.home-card { margin: 15vh auto; max-width: 650px; text-align: center; background: white; border-radius: 24px; padding: clamp(2rem, 7vw, 5rem); box-shadow: 0 15px 50px #193b3410; }
+.home-card h1 { font-size: clamp(2.4rem, 5vw, 4rem); margin-inline: auto; }
+.spark { color: #657b23; font-size: 2rem; margin-bottom: 1rem; }
+@media (max-width: 700px) { .auth-layout { grid-template-columns: 1fr; } .brand-panel { min-height: 34vh; padding: 2.5rem 1.5rem; } .brand-mark { margin-bottom: 3rem; } .brand-panel h1 { font-size: 3rem; } .form-panel { padding: 3rem 1.5rem; } }
