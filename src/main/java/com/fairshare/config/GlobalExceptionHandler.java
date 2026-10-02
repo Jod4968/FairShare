@@ -18,4 +18,5 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConflictException.class) ResponseEntity<?> conflict(ConflictException e) { return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", e.getMessage())); }
     @ExceptionHandler(UnauthorizedException.class) ResponseEntity<?> unauthorized(UnauthorizedException e) { return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", e.getMessage())); }
     @ExceptionHandler(NotFoundException.class) ResponseEntity<?> notFound(NotFoundException e) { return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage())); }
+    @ExceptionHandler(InvalidRequestException.class) ResponseEntity<?> invalidRequest(InvalidRequestException e) { return ResponseEntity.badRequest().body(Map.of("error", e.getMessage())); }
 }

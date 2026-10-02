@@ -55,4 +55,20 @@ a { color: #526c16; font-weight: 700; text-decoration: none; }
 .groups-content h3 { margin-top: 2rem; }
 .groups-layout > .error { margin: 1rem 0; }
 @media (max-width: 700px) { .auth-layout { grid-template-columns: 1fr; } .brand-panel { min-height: 34vh; padding: 2.5rem 1.5rem; } .brand-mark { margin-bottom: 3rem; } .brand-panel h1 { font-size: 3rem; } .form-panel { padding: 3rem 1.5rem; } }
+.group-expenses-link { display: inline-block; margin: .5rem 0; }
+.expense-layout { display: grid; grid-template-columns: .9fr 1.1fr; gap: 1.25rem; align-items: start; }
+.expense-form, .expense-list, .expense-detail { margin: 0; padding: 1.5rem; background: white; border-radius: 16px; box-shadow: 0 15px 50px #193b3410; }
+.expense-form h2, .expense-list h2 { margin: 0 0 1rem; font-size: 1.2rem; }
+select { border: 1px solid #d6dfd9; border-radius: 9px; padding: .8rem .9rem; color: #1e2a26; background: #fff; }
+fieldset { border: 1px solid #d6dfd9; border-radius: 9px; padding: .8rem; display: grid; gap: .6rem; }
+legend { padding: 0 .3rem; font-size: .82rem; font-weight: 600; }
+.participant-option { display: flex; align-items: center; gap: .5rem; font-weight: 400; }
+.participant-option input[type="number"] { margin-left: auto; width: 110px; padding: .45rem; }
+.expense-list { display: grid; gap: .6rem; }
+.expense-item { display: flex; justify-content: space-between; gap: 1rem; text-align: left; background: #f5f7f2; color: #1e2a26; padding: .8rem 1rem; }
+.expense-item span { display: grid; gap: .2rem; }
+.expense-item small { color: #708079; font-size: .78rem; }
+.expense-item.selected { outline: 2px solid #d9f26a; }
+.expense-detail { margin-top: 1.25rem; }
 @media (max-width: 700px) { .group-actions, .groups-content { grid-template-columns: 1fr; } .groups-header { margin-top: 2.5rem; } }
+@media (max-width: 700px) { .expense-layout { grid-template-columns: 1fr; } }

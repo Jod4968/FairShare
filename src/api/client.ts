@@ -17,6 +17,12 @@ export async function apiRequest<T>(path: string, options: RequestInit & { token
 export type AuthResponse = { token: string; user?: { email: string; fullName?: string } }
 export type Group = { id: number; name: string; joinCode: string; createdBy: number; createdAt: string; updatedAt: string }
 export type GroupMember = { userId: number; email: string; fullName: string; joinedAt: string }
+export type ExpenseParticipant = { userId: number; email: string; fullName: string; shareMinor: number }
+export type Expense = {
+  id: number; groupId: number; paidBy: number; paidByName: string; amountMinor: number
+  description: string; category: string; splitType: 'EQUAL' | 'CUSTOM'
+  createdAt: string; updatedAt: string; participants: ExpenseParticipant[]
+}
 
 export const authApi = {
   login: (email: string, password: string) => apiRequest<AuthResponse>('/auth/login', {
@@ -34,4 +40,13 @@ export const groupsApi = {
   get: (id: number, token: string) => apiRequest<Group>(`/groups/${id}`, { token }),
   members: (id: number, token: string) => apiRequest<GroupMember[]>(`/groups/${id}/members`, { token }),
   leave: (id: number, token: string) => apiRequest<void>(`/groups/${id}/membership`, { method: 'DELETE', token }),
+}
+
+export const expensesApi = {
+  list: (groupId: number, token: string) => apiRequest<Expense[]>(`/groups/${groupId}/expenses`, { token }),
+  create: (groupId: number, request: unknown, token: string) => apiRequest<Expense>(`/groups/${groupId}/expenses`, {
+    method: 'POST', token, body: JSON.stringify(request),
+  }),
+  get: (groupId: number, expenseId: number, token: string) => apiRequest<Expense>(`/groups/${groupId}/expenses/${expenseId}`, { token }),
+  remove: (groupId: number, expenseId: number, token: string) => apiRequest<void>(`/groups/${groupId}/expenses/${expenseId}`, { method: 'DELETE', token }),
 }

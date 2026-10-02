@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { groupsApi, type Group, type GroupMember } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 
@@ -61,7 +62,7 @@ export function GroupsPage() {
       {error && <p className="error" role="alert">{error}</p>}
       <section className="groups-content">
         <div className="group-list"><h2>Your groups</h2>{loading ? <p className="muted">Loading groups…</p> : groups.length === 0 ? <p className="muted">Create or join your first group.</p> : groups.map(group => <button className={`group-item ${selected?.id === group.id ? 'selected' : ''}`} key={group.id} onClick={() => void selectGroup(group)}>{group.name}<span>{group.joinCode}</span></button>)}</div>
-        {selected && <div className="group-detail"><div className="detail-heading"><div><p className="eyebrow accent">Group details</p><h2>{selected.name}</h2></div><button className="button-danger" onClick={() => void leaveGroup()}>Leave group</button></div><p className="join-code">Join code <strong>{selected.joinCode}</strong></p><h3>Members</h3><ul className="member-list">{members.map(member => <li key={member.userId}><strong>{member.fullName}</strong><span>{member.email}</span></li>)}</ul></div>}
+        {selected && <div className="group-detail"><div className="detail-heading"><div><p className="eyebrow accent">Group details</p><h2>{selected.name}</h2></div><button className="button-danger" onClick={() => void leaveGroup()}>Leave group</button></div><p className="join-code">Join code <strong>{selected.joinCode}</strong></p><Link className="group-expenses-link" to={`/groups/${selected.id}/expenses`}>View expenses →</Link><h3>Members</h3><ul className="member-list">{members.map(member => <li key={member.userId}><strong>{member.fullName}</strong><span>{member.email}</span></li>)}</ul></div>}
       </section>
     </main>
   )
