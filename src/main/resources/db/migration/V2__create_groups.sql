@@ -1,0 +1,17 @@
+CREATE TABLE groups (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(120) NOT NULL,
+    join_code VARCHAR(32) NOT NULL UNIQUE,
+    created_by BIGINT NOT NULL REFERENCES users(id),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE group_members (
+    group_id BIGINT NOT NULL REFERENCES groups(id) ON DELETE CASCADE,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    joined_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (group_id, user_id)
+);
+
+CREATE INDEX idx_group_members_user_id ON group_members(user_id);

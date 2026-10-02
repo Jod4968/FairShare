@@ -33,4 +33,26 @@ a { color: #526c16; font-weight: 700; text-decoration: none; }
 .home-card { margin: 15vh auto; max-width: 650px; text-align: center; background: white; border-radius: 24px; padding: clamp(2rem, 7vw, 5rem); box-shadow: 0 15px 50px #193b3410; }
 .home-card h1 { font-size: clamp(2.4rem, 5vw, 4rem); margin-inline: auto; }
 .spark { color: #657b23; font-size: 2rem; margin-bottom: 1rem; }
+.groups-layout { min-height: 100vh; max-width: 1100px; margin: auto; padding: 1.5rem clamp(1.25rem, 5vw, 4rem); }
+.groups-header { margin: 4rem 0 2rem; }
+.groups-header h1 { font: 600 clamp(2.6rem, 5vw, 4rem)/1.03 Fraunces, serif; margin: .4rem 0; }
+.group-actions, .groups-content { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+.group-actions form, .group-list, .group-detail { margin: 0; padding: 1.5rem; background: white; border-radius: 16px; box-shadow: 0 15px 50px #193b3410; }
+.group-actions h2, .group-list h2, .group-detail h2 { margin: 0 0 1rem; font-size: 1.2rem; }
+.group-actions label { margin-bottom: .5rem; }
+.groups-content { margin-top: 1.25rem; grid-template-columns: .8fr 1.2fr; align-items: start; }
+.group-list { display: grid; gap: .6rem; }
+.group-item { display: flex; justify-content: space-between; text-align: left; background: #f5f7f2; color: #1e2a26; padding: .8rem 1rem; }
+.group-item span, .join-code strong { color: #657b23; font-size: .78rem; letter-spacing: .08em; }
+.group-item.selected { outline: 2px solid #d9f26a; }
+.detail-heading { display: flex; justify-content: space-between; gap: 1rem; align-items: start; }
+.detail-heading h2 { font: 600 2rem/1.1 Fraunces, serif; }
+.button-danger { background: #fff0ed; color: #b1433f; padding: .6rem .8rem; }
+.join-code { color: #708079; }
+.member-list { list-style: none; padding: 0; margin: 0; display: grid; gap: .7rem; }
+.member-list li { display: grid; gap: .1rem; padding: .7rem 0; border-bottom: 1px solid #edf1ed; }
+.member-list span { color: #708079; font-size: .85rem; }
+.groups-content h3 { margin-top: 2rem; }
+.groups-layout > .error { margin: 1rem 0; }
 @media (max-width: 700px) { .auth-layout { grid-template-columns: 1fr; } .brand-panel { min-height: 34vh; padding: 2.5rem 1.5rem; } .brand-mark { margin-bottom: 3rem; } .brand-panel h1 { font-size: 3rem; } .form-panel { padding: 3rem 1.5rem; } }
+@media (max-width: 700px) { .group-actions, .groups-content { grid-template-columns: 1fr; } .groups-header { margin-top: 2.5rem; } }
