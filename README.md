@@ -1,24 +1,69 @@
-# FairShare backend (Phase 1)
+# FairShare
 
-Lean Spring Boot backend for registration, login, JWT authentication, and the current user endpoint. Expenses, balances, settlements, groups, dashboard, and AI are intentionally out of scope.
+> **Making shared living simpler.**
 
-## Configuration
+FairShare is an AI-powered expense-sharing application built for people living together in hostels, PGs, apartments, and shared rooms.
 
-Copy `.env.example` to `.env` and set `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`, `JWT_SECRET` (at least 32 bytes), `JWT_EXPIRATION_MS`, and optionally `PORT`. Spring Boot reads these variables from the process environment. Defaults target a local PostgreSQL database named `fairshare`. Flyway applies the initial schema migration automatically.
+It helps groups **record expenses, split costs, track balances, and settle up** without the usual confusion around who paid, who owes whom, and how much.
 
-Start PostgreSQL for local development with:
+The long-term goal is to make expense management as simple as saying:
 
-```bash
-docker compose up -d postgres
-```
+> "I paid ₹900 for dinner for me, Rahul and Kunal."
 
-The frontend uses `VITE_API_URL` at build time and defaults to `http://localhost:8080/api`.
+FairShare can turn that natural-language request into a structured expense while keeping all financial calculations and business rules deterministic on the backend.
 
-## Run and validate
+---
 
-```bash
-mvn test
-mvn spring-boot:run
-```
+## ✨ Why FairShare?
 
-Endpoints: `POST /api/auth/register`, `POST /api/auth/login`, and authenticated `GET /api/auth/me`. Send JWT responses as `Authorization: Bearer <token>`.
+Shared living often means shared expenses:
+
+- 🍕 Food and dinners
+- 🛒 Groceries
+- 📶 Wi-Fi
+- ⚡ Electricity
+- 🏠 Rent
+- 🚕 Transportation
+- 🎮 Entertainment
+- 💸 Other shared expenses
+
+Manually calculating these expenses becomes annoying very quickly.
+
+FairShare aims to provide a single place to:
+
+**Record → Split → Track → Settle**
+
+---
+
+## 🚀 Core Features
+
+### Authentication
+
+- User registration
+- User login
+- JWT-based authentication
+- Protected API endpoints
+- Authenticated user profile
+- Password hashing
+
+### Expense Sharing
+
+Planned core functionality:
+
+- Create and join groups
+- Add shared expenses
+- Equal expense splitting
+- Custom expense splitting
+- Expense history
+- Track individual balances
+- Generate simplified settlement suggestions
+- Record completed settlements
+
+### 🤖 AI-Powered Interaction
+
+FairShare is designed to use an open-weight AI model as part of the application.
+
+Users will eventually be able to interact with expenses using natural language, for example:
+
+```text
+I paid ₹900 for dinner for me, Rahul and Kunal.
