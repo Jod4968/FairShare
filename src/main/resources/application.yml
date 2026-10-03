@@ -19,3 +19,9 @@ app:
   jwt:
     secret: ${JWT_SECRET:change-this-development-secret-to-at-least-32-characters}
     expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+ai:
+  enabled: ${AI_ENABLED:false}
+  provider: ${AI_PROVIDER:ollama}
+  base-url: ${AI_BASE_URL:http://localhost:11434}
+  model: ${AI_MODEL:gemma3:4b}
+  timeout-ms: ${AI_TIMEOUT_MS:10000}

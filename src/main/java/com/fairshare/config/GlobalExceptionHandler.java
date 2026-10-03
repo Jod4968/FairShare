@@ -1,6 +1,7 @@
 package com.fairshare.config;
 
 import com.fairshare.auth.*;
+import com.fairshare.ai.*;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.http.*;
@@ -19,4 +20,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class) ResponseEntity<?> unauthorized(UnauthorizedException e) { return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", e.getMessage())); }
     @ExceptionHandler(NotFoundException.class) ResponseEntity<?> notFound(NotFoundException e) { return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage())); }
     @ExceptionHandler(InvalidRequestException.class) ResponseEntity<?> invalidRequest(InvalidRequestException e) { return ResponseEntity.badRequest().body(Map.of("error", e.getMessage())); }
+    @ExceptionHandler(AiUnavailableException.class) ResponseEntity<?> aiUnavailable(AiUnavailableException e) { return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(Map.of("error", e.getMessage())); }
+    @ExceptionHandler(AiException.class) ResponseEntity<?> aiError(AiException e) { return ResponseEntity.badRequest().body(Map.of("error", e.getMessage())); }
 }

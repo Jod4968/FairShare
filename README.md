@@ -63,6 +63,34 @@ Planned core functionality:
 
 FairShare is designed to use an open-weight AI model as part of the application.
 
+#### Local assistant setup
+
+Phase 5 uses Gemma through Ollama behind an `AiClient` abstraction. The model only extracts
+structured intent; authentication, member resolution, financial calculations, validation, and
+database mutations remain in the deterministic Spring services. Because the model runs locally,
+financial data does not need to be sent to a proprietary hosted AI API, and the provider can be
+inspected or replaced. “Open-weight” is used deliberately; model licensing should be checked
+separately for each configured Gemma release.
+
+Install Ollama, pull the configured model, and start it:
+
+```text
+ollama pull gemma3:4b
+ollama serve
+```
+
+Configure the backend with:
+
+```text
+AI_ENABLED=true
+AI_PROVIDER=ollama
+AI_BASE_URL=http://localhost:11434
+AI_MODEL=gemma3:4b
+```
+
+AI is disabled by default, and FairShare continues to start and support manual functionality
+when Ollama is unavailable.
+
 Users will eventually be able to interact with expenses using natural language, for example:
 
 ```text
