@@ -3,23 +3,30 @@ package com.fairshare.ai;
 import com.fairshare.auth.InvalidRequestException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 final class MonetaryAmountParser {
     private static final String NUMBER = "(\\d+(?:\\.\\d{1,2})?)";
-    private static final Pattern CURRENCY_SYMBOL = Pattern.compile("₹\\s*" + NUMBER);
-    private static final Pattern RUPEE_PREFIX = Pattern.compile("\\bRs\\.?\\s*" + NUMBER, Pattern.CASE_INSENSITIVE);
-    private static final Pattern RUPEE_WORD = Pattern.compile(NUMBER + "\\s*(?:rupees?|rs\\.?)\\b", Pattern.CASE_INSENSITIVE);
-    private static final Pattern PAID_AMOUNT = Pattern.compile("\\bpaid\\s+" + NUMBER + "\\b", Pattern.CASE_INSENSITIVE);
+    private static final Pattern CURRENCY_SYMBOL = Pattern.compile("(?<![\\w.])₹\\s*" + NUMBER + "(?![\\w.])");
+    private static final Pattern RUPEE_PREFIX = Pattern.compile("(?<![\\w.])Rs\\.?\\s*" + NUMBER + "(?![\\w.])", Pattern.CASE_INSENSITIVE);
+    private static final Pattern RUPEE_WORD = Pattern.compile("(?<![\\w.])" + NUMBER + "\\s*(?:rupees?|rs\\.?)" + "(?![\\w.])", Pattern.CASE_INSENSITIVE);
+    private static final Pattern PAID_AMOUNT = Pattern.compile("\\bpaid\\s+" + NUMBER + "(?![\\w.])", Pattern.CASE_INSENSITIVE);
 
     private MonetaryAmountParser() {}
 
     static long toMinorUnits(String text) {
-        Matcher matcher = firstMatch(text, CURRENCY_SYMBOL, RUPEE_PREFIX, RUPEE_WORD, PAID_AMOUNT);
-        if (matcher == null) throw new InvalidRequestException("I couldn't find a valid rupee amount.");
+        List<AmountMatch> matches = allMatches(text, CURRENCY_SYMBOL, RUPEE_PREFIX, RUPEE_WORD, PAID_AMOUNT);
+        if (matches.isEmpty()) throw new InvalidRequestException("I couldn't find a valid rupee amount.");
+        List<AmountMatch> distinctMatches = new ArrayList<>();
+        for (AmountMatch match : matches) {
+            if (distinctMatches.stream().noneMatch(existing -> overlaps(existing, match))) distinctMatches.add(match);
+        }
+        if (distinctMatches.size() > 1) throw new InvalidRequestException("Please provide exactly one rupee amount.");
         try {
-            long amountMinor = new BigDecimal(matcher.group(1)).movePointRight(2)
+            long amountMinor = new BigDecimal(distinctMatches.get(0).value()).movePointRight(2)
                     .setScale(0, RoundingMode.UNNECESSARY).longValueExact();
             if (amountMinor <= 0) throw new InvalidRequestException("Amount must be greater than zero.");
             return amountMinor;
@@ -28,12 +35,18 @@ final class MonetaryAmountParser {
         }
     }
 
-    private static Matcher firstMatch(String text, Pattern... patterns) {
-        Matcher best = null;
+    private static List<AmountMatch> allMatches(String text, Pattern... patterns) {
+        List<AmountMatch> matches = new ArrayList<>();
         for (Pattern pattern : patterns) {
             Matcher matcher = pattern.matcher(text);
-            if (matcher.find() && (best == null || matcher.start() < best.start())) best = matcher;
+            while (matcher.find()) matches.add(new AmountMatch(matcher.start(), matcher.end(), matcher.group(1)));
         }
-        return best;
+        return matches;
     }
+
+    private static boolean overlaps(AmountMatch first, AmountMatch second) {
+        return first.start() < second.end() && second.start() < first.end();
+    }
+
+    private record AmountMatch(int start, int end, String value) {}
 }

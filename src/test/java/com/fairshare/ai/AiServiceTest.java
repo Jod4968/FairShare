@@ -43,6 +43,13 @@ class AiServiceTest {
     }
 
     @Test void naturalLanguageAmountsAreConvertedToPersistedPaise() {
+        assertAmount("I paid 1000 for lunch", 100000L);
+        assertAmount("I paid 1000rs for lunch", 100000L);
+        assertAmount("I paid ₹1000 for lunch", 100000L);
+        assertAmount("I paid 1000 rupees for lunch", 100000L);
+        assertAmount("I paid 1000.50 for lunch", 100050L);
+        assertAmount("I paid ₹1000.50 for lunch", 100050L);
+        assertAmount("I paid 200 for both of us", 20000L);
         assertAmount("I paid 200 rupees for dinner for me and Alexender", 20000L);
         assertAmount("I paid ₹200 for dinner for me and Alexender", 20000L);
         assertAmount("I paid 200rs for dinner for both of us", 20000L);
@@ -95,10 +102,15 @@ class AiServiceTest {
         clearInvocations(expenseService);
         when(ai.interpret(eq(text), anyList())).thenReturn(new AiDtos.Intent(AiIntent.CREATE_EXPENSE, 2L,
                 "dinner", ExpenseCategory.FOOD, SplitType.EQUAL, List.of("me", "Rahul"), null, null, null, "me"));
-        assertTrue(service.message(10L, text, current).success());
+        AiDtos.MessageResponse response = service.message(10L, text, current);
+        assertTrue(response.success());
         ArgumentCaptor<ExpenseDtos.CreateExpenseRequest> request = ArgumentCaptor.forClass(ExpenseDtos.CreateExpenseRequest.class);
         verify(expenseService).create(eq(10L), request.capture(), same(current));
         assertEquals(expectedMinor, request.getValue().amountMinor());
+        assertEquals(expectedMinor % 100 == 0
+                        ? "Added ₹" + expectedMinor / 100 + " dinner expense."
+                        : "Added ₹" + expectedMinor / 100 + "." + String.format("%02d", expectedMinor % 100) + " dinner expense.",
+                response.message());
     }
     private static User user(Long id, String email, String name) { User user = new User(email, "hash", name); setId(user, id); return user; }
     private static Group group() { Group group = new Group("Flat", "CODE123456", user(1L, "sagar@example.com", "Sagar")); setId(group, 10L); return group; }

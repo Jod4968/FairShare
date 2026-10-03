@@ -119,7 +119,8 @@ public class AiService {
     private boolean isMe(String name) { return name != null && Set.of("me", "myself", "i").contains(name.trim().toLowerCase()); }
     private String money(long minor) {
         long absolute = Math.abs(minor);
-        return (minor < 0 ? "-₹" : "₹") + (absolute / 100) + "." + String.format(Locale.ROOT, "%02d", absolute % 100);
+        String fractional = absolute % 100 == 0 ? "" : "." + String.format(Locale.ROOT, "%02d", absolute % 100);
+        return (minor < 0 ? "-₹" : "₹") + (absolute / 100) + fractional;
     }
     private Map<Long, User> groupUsers(Long groupId) { return members.findByGroupIdOrderByJoinedAtAsc(groupId).stream().collect(Collectors.toMap(GroupMember::getUserId, GroupMember::getUser, (a,b) -> a, LinkedHashMap::new)); }
     private Group authorizedGroup(Long groupId, User user) {
