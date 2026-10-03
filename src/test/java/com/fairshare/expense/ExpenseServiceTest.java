@@ -48,6 +48,14 @@ class ExpenseServiceTest {
         assertEquals(SplitType.EQUAL, response.splitType());
     }
 
+    @Test void persistedExpenseKeepsAmountInPaise() {
+        service.create(10L, new ExpenseDtos.CreateExpenseRequest("Dinner", 20000L,
+                ExpenseCategory.FOOD, SplitType.EQUAL, List.of(1L, 2L), null), payer);
+        ArgumentCaptor<Expense> captor = ArgumentCaptor.forClass(Expense.class);
+        verify(expenses).save(captor.capture());
+        assertEquals(20000L, captor.getValue().getAmountMinor());
+    }
+
     @Test void equalSplitDistributesRemainderToEarliestParticipants() {
         create(1000L, List.of(1L, 2L, 3L));
         assertEquals(List.of(334L, 333L, 333L), savedShares());

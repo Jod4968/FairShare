@@ -27,8 +27,15 @@ public class OllamaAiClient implements AiClient {
     public AiDtos.Intent interpret(String message, List<String> memberNames) {
         String prompt = """
                 You are the FairShare expense assistant. You have no database access and do not calculate finances.
-                Return ONLY valid JSON with fields intent, amountMinor, description, category, splitType,
+                Return ONLY valid JSON with fields intent, amountRupees, description, category, splitType,
                 participantNames, customShares, targetUserName, period, payerName.
+                amountRupees is the user-facing rupee amount as a decimal STRING, never paise and never a
+                floating-point calculation. The backend converts it to integer paise and is the final financial authority.
+                Examples: "₹200" -> amountRupees "200"; "200 rupees" -> "200"; "200rs" -> "200";
+                "₹900" -> "900"; "900 rupees" -> "900"; "₹125.50" -> "125.50".
+                If an amountMinor field is ever present, it means PAISA (minor currency units), not rupees:
+                ₹200 -> amountMinor 20000, 200 rupees -> 20000, 200rs -> 20000,
+                ₹900 -> 90000, 900 rupees -> 90000, ₹125.50 -> 12550.
                 Supported intents: CREATE_EXPENSE, QUERY_BALANCES, QUERY_GROUP_SPENDING, QUERY_PERSON_SPENDING,
                 QUERY_CATEGORY_EXPENSES, QUERY_MONTHLY_SPENDING, UNKNOWN.
                 Categories: FOOD, GROCERIES, RENT, UTILITIES, TRANSPORT, ENTERTAINMENT, OTHER.

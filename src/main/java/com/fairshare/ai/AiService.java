@@ -40,7 +40,7 @@ public class AiService {
         if (intent == null || intent.intent() == null || intent.intent() == AiIntent.UNKNOWN)
             return new AiDtos.MessageResponse("I can help with expenses, balances, and spending. What would you like to do?", AiIntent.UNKNOWN, false);
         return switch (intent.intent()) {
-            case CREATE_EXPENSE -> createExpense(groupId, intent, currentUser, groupUsers);
+            case CREATE_EXPENSE -> createExpense(groupId, text, intent, currentUser, groupUsers);
             case QUERY_BALANCES -> balances(groupId, currentUser);
             case QUERY_GROUP_SPENDING -> spending(groupId, intent.period(), null, null, currentUser);
             case QUERY_PERSON_SPENDING -> {
@@ -53,12 +53,17 @@ public class AiService {
         };
     }
 
-    private AiDtos.MessageResponse createExpense(Long groupId, AiDtos.Intent intent, User currentUser, Map<Long, User> users) {
+    private AiDtos.MessageResponse createExpense(Long groupId, String text, AiDtos.Intent intent,
+                                                 User currentUser, Map<Long, User> users) {
         if (intent.payerName() != null && !intent.payerName().isBlank()
                 && !isMe(intent.payerName()) && !intent.payerName().equalsIgnoreCase(currentUser.getFullName()))
             return new AiDtos.MessageResponse("Only the authenticated user can be the payer.", AiIntent.CREATE_EXPENSE, false);
-        if (intent.amountMinor() == null || intent.amountMinor() <= 0)
-            return new AiDtos.MessageResponse("I understand this is an expense, but I need a positive amount.", AiIntent.CREATE_EXPENSE, false);
+        final long amountMinor;
+        try {
+            amountMinor = MonetaryAmountParser.toMinorUnits(text);
+        } catch (InvalidRequestException exception) {
+            return new AiDtos.MessageResponse(exception.getMessage(), AiIntent.CREATE_EXPENSE, false);
+        }
         if (intent.description() == null || intent.description().isBlank())
             return new AiDtos.MessageResponse("Please provide an expense description.", AiIntent.CREATE_EXPENSE, false);
         List<String> names = intent.participantNames() == null ? List.of() : intent.participantNames();
@@ -72,9 +77,9 @@ public class AiService {
         if (split == SplitType.CUSTOM && intent.customShares() != null)
             custom = intent.customShares().stream().map(share -> new ExpenseDtos.CustomParticipantRequest(
                     resolveName(share.participantName(), currentUser, users).getId(), share.shareMinor())).toList();
-        expenseService.create(groupId, new ExpenseDtos.CreateExpenseRequest(intent.description(), intent.amountMinor(),
+        expenseService.create(groupId, new ExpenseDtos.CreateExpenseRequest(intent.description(), amountMinor,
                 category, split, split == SplitType.EQUAL ? ids : null, custom), currentUser);
-        return new AiDtos.MessageResponse("Added " + money(intent.amountMinor()) + " " + intent.description().trim() + " expense.", AiIntent.CREATE_EXPENSE, true);
+        return new AiDtos.MessageResponse("Added " + money(amountMinor) + " " + intent.description().trim() + " expense.", AiIntent.CREATE_EXPENSE, true);
     }
 
     private AiDtos.MessageResponse balances(Long groupId, User user) {
